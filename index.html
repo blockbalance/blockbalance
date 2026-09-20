@@ -86,7 +86,7 @@ footer{text-align:center;color:#718675;padding:35px;font-size:12px}
       <h1>Welcome back, Player!</h1>
       <p>Your coins. Your vault. Your world.</p>
     </div>
-    <button onclick="alert('Login will be connected in the next step!')">♟ Login / Sign up</button>
+    <button onclick="openAuth()">👤 Login / Sign up</button>
   </div>
 
   <div class="grid">
@@ -165,5 +165,24 @@ footer{text-align:center;color:#718675;padding:35px;font-size:12px}
     SUPABASE_URL,
     SUPABASE_KEY
   );
+</script><script>
+async function openAuth() {
+  const email = prompt("Enter your email:");
+  if (!email) return;
+
+  const password = prompt("Enter your password:");
+  if (!password) return;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Login failed: " + error.message);
+  } else {
+    alert("Logged in successfully!");
+  }
+}
 </script></body>
 </html>
