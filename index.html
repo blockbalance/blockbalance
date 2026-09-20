@@ -316,7 +316,10 @@
       }
     }
 
-    loginBtn.addEventListener("click", login);
+    loginBtn.addEventListener("click", login);loginBtn.addEventListener("click", () => {
+  alert("BUTTON WORKING");
+});
+  
     signupBtn.addEventListener("click", signup);
     logoutBtn.addEventListener("click", logout);
 
