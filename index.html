@@ -1,1 +1,160 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlockBalance | Minecraft Wallet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:#101611; --panel:#19251c; --green:#58e078;
+  --lime:#a4ff73; --text:#f1f8ef; --muted:#93a795;
+}
+*{box-sizing:border-box}
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  background-image:linear-gradient(#ffffff05 1px,transparent 1px),
+  linear-gradient(90deg,#ffffff05 1px,transparent 1px);
+  background-size:32px 32px;
+}
+header {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:22px 5%;border-bottom:1px solid #344638;
+  background:#101611ed;position:sticky;top:0;
+}
+.logo{font-weight:900;font-size:21px;color:var(--lime)}
+.logo span{color:white}
+.tag{font-size:11px;color:var(--muted);margin-top:5px}
+button {
+  border:0;cursor:pointer;font-weight:800;border-radius:8px;
+  padding:12px 17px;background:var(--green);color:#102015;
+  transition:.2s;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.12)}
+main{max-width:1200px;margin:35px auto;padding:0 22px}
+.welcome{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+h1{font-size:clamp(25px,4vw,38px);margin:0 0 9px}
+p{color:var(--muted);margin:0}
+.pixel{font-family:"Press Start 2P",monospace;font-size:10px;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-top:28px}
+.card{background:var(--panel);border:1px solid #354a38;border-radius:14px;padding:23px;box-shadow:0 8px 30px #0003}
+.card h3{margin:0 0 18px;font-size:14px;color:#b4c9b7}
+.balance{font-size:clamp(25px,3vw,36px);font-weight:900;margin:12px 0}
+.green{color:var(--lime)}
+.muted{color:var(--muted);font-size:13px}
+.wallets{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.wallet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wallet-head h2{font-size:18px;margin:0}
+.avatar{font-size:26px;background:#293c2d;padding:12px;border-radius:10px}
+.actions{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.actions button{flex:1}
+.secondary{background:#2a3b2d;color:white;border:1px solid #4c654f}
+.danger{background:#49292a;color:#ffb6b6}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:35px 0 16px}
+.section-title h2{margin:0;font-size:21px}
+.history{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:500px}
+th,td{text-align:left;padding:15px 12px;border-bottom:1px solid #344638;font-size:13px}
+th{color:var(--muted);font-weight:600}
+.credit{color:var(--lime);font-weight:800}
+.debit{color:#ff8585;font-weight:800}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+footer{text-align:center;color:#718675;padding:35px;font-size:12px}
+@media(max-width:750px){
+ .grid{grid-template-columns:1fr}
+ .wallets{grid-template-columns:1fr}
+ header{padding:18px 5%}
+ main{margin-top:25px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">⛏ BLOCK<span>BALANCE</span></div>
+    <div class="tag">YOUR PERSONAL MINECRAFT VAULT</div>
+  </div>
+  <div class="pixel green">● ONLINE</div>
+</header>
+
+<main>
+  <div class="welcome">
+    <div>
+      <h1>Welcome back, Player!</h1>
+      <p>Your coins. Your vault. Your world.</p>
+    </div>
+    <button onclick="alert('Login will be connected in the next step!')">♟ Login / Sign up</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>💎 COMBINED BALANCE</h3>
+      <div class="balance green">₹ 0.00</div>
+      <div class="muted">Your duo's total coins</div>
+    </div>
+    <div class="card">
+      <h3>📦 TOTAL TRANSACTIONS</h3>
+      <div class="balance">0</div>
+      <div class="muted">All-time wallet activity</div>
+    </div>
+    <div class="card">
+      <h3>🗓 MONTHLY RESET</h3>
+      <div class="balance">Manual</div>
+      <button class="secondary" onclick="alert('Reset will be securely connected later.')">↻ Reset month</button>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>🧑‍🤝‍🧑 Duo Wallets</h2>
+    <span class="pixel green">2 PLAYERS</span>
+  </div>
+
+  <div class="wallets">
+    <div class="card">
+      <div class="wallet-head">
+        <div><h2>⛏ Your Wallet</h2><p class="muted">Your personal vault</p></div>
+        <div class="avatar">🧑</div>
+      </div>
+      <div class="balance">₹ 0.00</div>
+      <div class="muted">Available balance</div>
+      <div class="actions">
+        <button onclick="alert('Credit will be connected after secure login setup.')">＋ Credit</button>
+        <button class="secondary" onclick="alert('Debit will be connected after secure login setup.')">－ Debit</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="wallet-head">
+        <div><h2>🛡 Friend's Wallet</h2><p class="muted">Friend's personal vault</p></div>
+        <div class="avatar">🧑‍🚀</div>
+      </div>
+      <div class="balance">₹ 0.00</div>
+      <div class="muted">Available balance</div>
+      <div class="actions">
+        <button onclick="alert('Friend wallet actions will require their own login.')">＋ Credit</button>
+        <button class="secondary" onclick="alert('Friend wallet actions will require their own login.')">－ Debit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>📜 Transaction History</h2>
+    <button class="secondary" onclick="alert('History filters will be connected later.')">Filter ▾</button>
+  </div>
+
+  <div class="card history">
+    <table>
+      <thead><tr><th>PLAYER</th><th>TYPE</th><th>AMOUNT</th><th>DATE</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="empty">🪹 No transactions yet.<br><br>Your activity will appear here after login.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>BLOCKBALANCE ⛏ BUILT FOR YOUR DUO • MINECRAFT INSPIRED</footer>
+</body>
+</html>
