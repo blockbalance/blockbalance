@@ -2,336 +2,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlockBalance</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlockBalance</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #101820;
-      color: #f3f7fa;
-      min-height: 100vh;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 7%;
-      background: #182630;
-      border-bottom: 2px solid #3b5260;
-    }
-
-    h1 { margin: 0; color: #70e0a0; font-size: 25px; }
-    button { cursor: pointer; border: 0; border-radius: 8px; padding: 11px 16px; font-weight: bold; }
-    .green { background: #70e0a0; color: #102018; }
-    .dark { background: #334956; color: white; }
-
-    main { width: min(900px, 92%); margin: 35px auto; }
-
-    .card {
-      background: #182630;
-      border: 1px solid #334956;
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 18px;
-    }
-
-    input {
-      width: 100%;
-      margin: 7px 0 14px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #526875;
-      background: #101820;
-      color: white;
-      font-size: 16px;
-    }
-
-    label { color: #c4d1d8; }
-    .muted { color: #aabac4; }
-    .balance { font-size: 38px; color: #70e0a0; font-weight: bold; margin: 12px 0; }
-    .hidden { display: none; }
-    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .row button { flex: 1; min-width: 120px; }
-    #message { white-space: pre-wrap; margin-top: 12px; color: #ffd27d; }
-    .transaction { padding: 12px 0; border-bottom: 1px solid #334956; }
-    .credit { color: #70e0a0; }
-    .debit { color: #ff9999; }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#101820;color:#f4f7fa;
+  font-family:Arial,sans-serif;min-height:100vh
+}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 6%;background:#182630;border-bottom:1px solid #334956
+}
+.logo{font-size:24px;font-weight:bold;color:#70e0a0}
+main{width:min(900px,92%);margin:30px auto}
+.card{
+  background:#182630;border:1px solid #334956;
+  border-radius:15px;padding:22px;margin-bottom:18px
+}
+h2{margin-top:0}
+input,select{
+  width:100%;padding:13px;margin:8px 0 16px;
+  border-radius:8px;border:1px solid #526875;
+  background:#101820;color:white;font-size:16px
+}
+label{color:#b9c9d1}
+button{
+  border:0;border-radius:8px;padding:12px 17px;
+  font-weight:bold;cursor:pointer;font-size:15px
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.green{background:#70e0a0;color:#102018}
+.dark{background:#334956;color:white}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row button{flex:1}
+.balance{font-size:38px;font-weight:bold;color:#70e0a0;margin:12px 0}
+.muted{color:#aabac4}
+.hidden{display:none!important}
+#message{white-space:pre-wrap;color:#ffd27d;line-height:1.5}
+.transaction{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:14px 0;border-bottom:1px solid #334956
+}
+.credit{color:#70e0a0}
+.debit{color:#ff9999}
+.small{font-size:13px}
+</style>
 </head>
 
 <body>
-  <header>
-    <h1>⛏ BlockBalance</h1>
-    <button id="logoutBtn" class="dark hidden">Logout</button>
-  </header>
+<header>
+  <div class="logo">⛏ BlockBalance</div>
+  <button id="logoutBtn" class="dark hidden">Logout</button>
+</header>
 
-  <main>
-    <section id="authSection" class="card">
-      <h2>Welcome to BlockBalance</h2>
-      <p class="muted">Login or create your wallet account.</p>
+<main>
+  <section id="authSection" class="card">
+    <h2>Welcome, Miner!</h2>
+    <p class="muted">Login or create your own wallet.</p>
 
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="Enter email" autocomplete="email">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="Email address"
+           autocomplete="email">
 
-      <label for="password">Password</label>
-      <input id="password" type="password" placeholder="At least 6 characters" autocomplete="current-password">
+    <label for="password">Password</label>
+    <input id="password" type="password" placeholder="At least 6 characters"
+           autocomplete="current-password">
 
-      <div class="row">
-        <button id="loginBtn" class="green">Login</button>
-        <button id="signupBtn" class="dark">Create account</button>
-      </div>
+    <div class="row">
+      <button id="loginBtn" class="green">Login</button>
+      <button id="signupBtn" class="dark">Create account</button>
+    </div>
 
-      <p id="message"></p>
-      <p class="muted">
-        Signup ke baad email confirmation maange, toh apna email verify karke login karna.
-      </p>
-    </section>
+    <p id="message"></p>
+  </section>
 
-    <section id="walletSection" class="hidden">
-      <div class="card">
-        <p class="muted">Logged in as</p>
-        <strong id="userEmail"></strong>
+  <section id="walletSection" class="hidden">
+    <div class="card">
+      <p class="muted">Logged in as</p>
+      <strong id="userEmail"></strong>
 
-        <h2>Your Wallet</h2>
-        <div class="balance" id="balance">Loading...</div>
-        <p class="muted">Your wallet balance</p>
-      </div>
+      <h2 style="margin-top:25px">Your Wallet</h2>
+      <div id="balance" class="balance">0 coins</div>
+      <p class="muted">Your personal wallet balance</p>
+    </div>
 
-      <div class="card">
-        <h2>Transaction History</h2>
-        <div id="history" class="muted">Loading transactions...</div>
-      </div>
-    </section>
-  </main>
+    <div class="card">
+      <h2>Make a transaction</h2>
 
-  <script>
-    // Supabase project details
-    const SUPABASE_URL = "https://ormrldprntcjxhlslfb.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_wVnJsHiuyE-ayvbhxn20Pw_QQd2UGdD";
+      <label for="txType">Transaction type</label>
+      <select id="txType">
+        <option value="credit">Credit (+)</option>
+        <option value="debit">Debit (-)</option>
+      </select>
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+      <label for="amount">Amount</label>
+      <input id="amount" type="number" min="1" step="any"
+             placeholder="Enter amount">
 
-    const authSection = document.getElementById("authSection");
-    const walletSection = document.getElementById("walletSection");
-    const loginBtn = document.getElementById("loginBtn");
-    const signupBtn = document.getElementById("signupBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const message = document.getElementById("message");
+      <label for="description">Description</label>
+      <input id="description" type="text"
+             maxlength="100" placeholder="e.g. Minecraft trade">
 
-    function showMessage(text) {
-      message.textContent = text;
+      <button id="submitTx" class="green">Submit transaction</button>
+      <p id="txMessage"></p>
+    </div>
+
+    <div class="card">
+      <h2>Transaction History</h2>
+      <div id="history" class="muted">Loading...</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SUPABASE_URL = "https://ormrldprntcjxhlslfb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wVnJsHiuyE-ayvbhxn20Pw_QQd2UGdD";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+function setMessage(text) {
+  $("message").textContent = text;
+}
+
+function credentials() {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if (!email || !password) {
+    setMessage("Email aur password enter karo.");
+    return null;
+  }
+
+  if (password.length < 6) {
+    setMessage("Password kam se kam 6 characters ka hona chahiye.");
+    return null;
+  }
+
+  return {email, password};
+}
+
+function showLoggedOut() {
+  $("authSection").classList.remove("hidden");
+  $("walletSection").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+  $("password").value = "";
+}
+
+async function login() {
+  const data = credentials();
+  if (!data) return;
+
+  $("loginBtn").disabled = true;
+  setMessage("Logging in...");
+
+  try {
+    const {error} = await db.auth.signInWithPassword(data);
+    if (error) throw error;
+
+    setMessage("");
+    await loadWallet();
+  } catch (e) {
+    setMessage("Login failed: " + e.message);
+  } finally {
+    $("loginBtn").disabled = false;
+  }
+}
+
+async function signup() {
+  const data = credentials();
+  if (!data) return;
+
+  $("signupBtn").disabled = true;
+  setMessage("Creating account...");
+
+  try {
+    const {data: result, error} = await db.auth.signUp(data);
+    if (error) throw error;
+
+    if (result.session) {
+      setMessage("");
+      await loadWallet();
+    } else {
+      setMessage(
+        "Account created. Email confirmation maange toh email verify " +
+        "karke login karo."
+      );
+    }
+  } catch (e) {
+    setMessage("Signup failed: " + e.message);
+  } finally {
+    $("signupBtn").disabled = false;
+  }
+}
+
+async function logout() {
+  const {error} = await db.auth.signOut();
+
+  if (error) {
+    alert("Logout failed: " + error.message);
+    return;
+  }
+
+  showLoggedOut();
+}
+
+async function loadWallet() {
+  const {data: result, error: authError} = await db.auth.getSession();
+
+  if (authError) {
+    setMessage(authError.message);
+    return;
+  }
+
+  const user = result.session?.user;
+
+  if (!user) {
+    showLoggedOut();
+    return;
+  }
+
+  $("authSection").classList.add("hidden");
+  $("walletSection").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("userEmail").textContent = user.email || "";
+
+  $("balance").textContent = "Loading...";
+  $("history").textContent = "Loading...";
+  $("txMessage").textContent = "";
+
+  try {
+    const {data: wallets, error: walletError} = await db
+      .from("wallets")
+      .select("id, display_name")
+      .eq("user_id", user.id)
+      .limit(1);
+
+    if (walletError) throw walletError;
+
+    const wallet = wallets?.[0];
+
+    if (!wallet) {
+      $("balance").textContent = "Wallet not found";
+      $("history").textContent =
+        "Supabase mein is user ka wallet nahi mila.";
+      return;
     }
 
-    function getCredentials() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+    const {data: txs, error: txError} = await db
+      .from("transactions")
+      .select("amount, transaction_type, description, created_at")
+      .eq("wallet_id", wallet.id)
+      .order("created_at", {ascending: false});
 
-      if (!email || !password) {
-        showMessage("Email aur password dono enter karo.");
-        return null;
-      }
+    if (txError) throw txError;
 
-      if (password.length < 6) {
-        showMessage("Password kam se kam 6 characters ka hona chahiye.");
-        return null;
-      }
+    let total = 0;
 
-      return { email, password };
+    for (const tx of txs || []) {
+      const amount = Number(tx.amount);
+      if (tx.transaction_type === "credit") total += amount;
+      if (tx.transaction_type === "debit") total -= amount;
     }
 
-    async function login() {
-      const credentials = getCredentials();
-      if (!credentials) return;
+    $("balance").textContent =
+      total.toLocaleString() + " coins";
 
-      loginBtn.disabled = true;
-      showMessage("Logging in...");
+    $("history").textContent = "";
 
-      try {
-        const { error } = await db.auth.signInWithPassword(credentials);
-
-        if (error) throw error;
-
-        showMessage("");
-        await loadWallet();
-      } catch (error) {
-        showMessage("Login error: " + error.message);
-      } finally {
-        loginBtn.disabled = false;
-      }
+    if (!txs || txs.length === 0) {
+      $("history").textContent = "No transactions yet.";
+      return;
     }
 
-    async function signup() {
-      const credentials = getCredentials();
-      if (!credentials) return;
+    for (const tx of txs) {
+      const item = document.createElement("div");
+      item.className = "transaction";
 
-      signupBtn.disabled = true;
-      showMessage("Creating account...");
+      const left = document.createElement("div");
+      const title = document.createElement("strong");
+      title.className =
+        tx.transaction_type === "credit" ? "credit" : "debit";
+      title.textContent =
+        (tx.transaction_type === "credit" ? "+" : "-") +
+        Number(tx.amount).toLocaleString() + " coins";
 
-      try {
-        const { data, error } = await db.auth.signUp(credentials);
+      const desc = document.createElement("div");
+      desc.textContent = tx.description || "Transaction";
 
-        if (error) throw error;
+      const date = document.createElement("div");
+      date.className = "muted small";
+      date.textContent = new Date(tx.created_at).toLocaleString();
 
-        if (data.session) {
-          showMessage("");
-          await loadWallet();
-        } else {
-          showMessage(
-            "Account created! Agar email confirmation enabled hai, " +
-            "toh email verify karke phir login karo."
-          );
-        }
-      } catch (error) {
-        showMessage("Signup error: " + error.message);
-      } finally {
-        signupBtn.disabled = false;
-      }
+      left.append(title, desc, date);
+      item.append(left);
+      $("history").append(item);
     }
+  } catch (e) {
+    $("balance").textContent = "Error";
+    $("history").textContent = e.message;
+  }
+}
 
-    async function logout() {
-      const { error } = await db.auth.signOut();
+async function submitTransaction() {
+  const amount = Number($("amount").value);
+  const type = $("txType").value;
+  const description = $("description").value.trim();
 
-      if (error) {
-        alert("Logout error: " + error.message);
-        return;
-      }
+  if (!Number.isFinite(amount) || amount <= 0) {
+    $("txMessage").textContent = "Valid amount enter karo.";
+    return;
+  }
 
-      showAuth();
-    }
+  $("submitTx").disabled = true;
+  $("txMessage").textContent = "Processing...";
 
-    function showAuth() {
-      authSection.classList.remove("hidden");
-      walletSection.classList.add("hidden");
-      logoutBtn.classList.add("hidden");
-      document.getElementById("password").value = "";
-      showMessage("");
-    }
-
-    async function loadWallet() {
-      const { data: sessionData, error: sessionError } =
-        await db.auth.getSession();
-
-      if (sessionError) {
-        showMessage("Session error: " + sessionError.message);
-        return;
-      }
-
-      const user = sessionData.session?.user;
-
-      if (!user) {
-        showAuth();
-        return;
-      }
-
-      authSection.classList.add("hidden");
-      walletSection.classList.remove("hidden");
-      logoutBtn.classList.remove("hidden");
-      document.getElementById("userEmail").textContent = user.email || "";
-
-      const balanceElement = document.getElementById("balance");
-      const historyElement = document.getElementById("history");
-
-      balanceElement.textContent = "Loading...";
-      historyElement.textContent = "Loading transactions...";
-
-      try {
-        const { data: wallets, error: walletError } = await db
-          .from("wallets")
-          .select("id, display_name")
-          .eq("user_id", user.id)
-          .limit(1);
-
-        if (walletError) throw walletError;
-
-        const wallet = wallets?.[0];
-
-        if (!wallet) {
-          balanceElement.textContent = "Wallet not found";
-          historyElement.textContent =
-            "Is account ke liye wallet row nahi mili. Supabase trigger check karo.";
-          return;
-        }
-
-        const { data: transactions, error: txError } = await db
-          .from("transactions")
-          .select("amount, transaction_type, description, created_at")
-          .eq("wallet_id", wallet.id)
-          .order("created_at", { ascending: false });
-
-        if (txError) throw txError;
-
-        let total = 0;
-
-        for (const tx of (transactions || [])) {
-          const amount = Number(tx.amount);
-
-          if (tx.transaction_type === "credit") total += amount;
-          if (tx.transaction_type === "debit") total -= amount;
-        }
-
-        balanceElement.textContent = total.toLocaleString() + " coins";
-
-        if (!transactions || transactions.length === 0) {
-          historyElement.textContent = "No transactions yet.";
-          return;
-        }
-
-        historyElement.innerHTML = "";
-
-        for (const tx of transactions) {
-          const item = document.createElement("div");
-          item.className = "transaction";
-
-          const type = document.createElement("strong");
-          type.className = tx.transaction_type === "credit" ? "credit" : "debit";
-          type.textContent =
-            (tx.transaction_type === "credit" ? "+" : "-") +
-            Number(tx.amount).toLocaleString() + " coins";
-
-          const description = document.createElement("div");
-          description.textContent = tx.description || "Transaction";
-
-          const date = document.createElement("small");
-          date.className = "muted";
-          date.textContent = new Date(tx.created_at).toLocaleString();
-
-          item.append(type, description, date);
-          historyElement.appendChild(item);
-        }
-      } catch (error) {
-        balanceElement.textContent = "Could not load";
-        historyElement.textContent =
-          "Wallet error: " + error.message;
-      }
-    }
-
-    loginBtn.addEventListener("click", login);loginBtn.addEventListener("click", () => {
-  alert("BUTTON WORKING");
-});
-  
-    signupBtn.addEventListener("click", signup);
-    logoutBtn.addEventListener("click", logout);
-
-    db.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        loadWallet();
-      } else {
-        showAuth();
-      }
+  try {
+    const {error} = await db.rpc("wallet_transaction", {
+      p_amount: amount,
+      p_type: type,
+      p_description: description
     });
 
+    if (error) throw error;
+
+    $("txMessage").textContent = "Transaction added!";
+    $("amount").value = "";
+    $("description").value = "";
+    await loadWallet();
+  } catch (e) {
+    $("txMessage").textContent = "Transaction failed: " + e.message;
+  } finally {
+    $("submitTx").disabled = false;
+  }
+}
+
+$("loginBtn").addEventListener("click", login);
+$("signupBtn").addEventListener("click", signup);
+$("logoutBtn").addEventListener("click", logout);
+$("submitTx").addEventListener("click", submitTransaction);
+
+db.auth.onAuthStateChange((event, session) => {
+  if (session) {
     loadWallet();
-  </script>
+  } else {
+    showLoggedOut();
+  }
+});
+
+loadWallet();
+</script>
 </body>
 </html>
