@@ -156,5 +156,14 @@ footer{text-align:center;color:#718675;padding:35px;font-size:12px}
 </main>
 
 <footer>BLOCKBALANCE ⛏ BUILT FOR YOUR DUO • MINECRAFT INSPIRED</footer>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://ormrldprntcjxhlslf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_wVnJsHiuyE-ayvbhxn20Pw_QQd2UGdD";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+</script></body>
 </html>
